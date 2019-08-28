@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  data-science-ipython-notebooks:
+    build: .
+    volumes:
+      - ./:/app
+      - ${LOCAL_WORKING_DIR}:/home/jovyan/work
+      - ${LOCAL_DATASETS}:/home/jovyan/work/datasets
+      - ${LOCAL_MODULES}:/home/jovyan/work/modules
+      - ${LOCAL_SSL_CERTS}:/etc/ssl/notebook
+    env_file: .env
+    ports:
+      - ${PORT}:8888
+    command: "start-notebook.sh \
+        --NotebookApp.password=${ACCESS_TOKEN} \
+        --NotebookApp.certfile=/etc/ssl/notebook/jupyter.pem"
